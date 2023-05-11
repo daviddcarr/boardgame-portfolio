@@ -49,6 +49,7 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
                             // startPosition={[8.5, 0.025, 0]}
                             startPosition={position}
                             startRotation={rotation}
+                            spawnPosition={[0, 10, 0]}
                             />
                     )
                 })

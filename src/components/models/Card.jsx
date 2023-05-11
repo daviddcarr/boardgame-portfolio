@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber';
 
 
-export default function Card({ startPosition, startRotation }) {
+export default function Card({ startPosition, startRotation, spawnPosition }) {
 
     const [ flipped, setFlipped ] = useState(false)
 
@@ -44,7 +44,11 @@ export default function Card({ startPosition, startRotation }) {
       });
   
     return (
-      <group ref={cardRef} onClick={() => setFlipped(!flipped)} >
+      <group 
+        ref={cardRef} 
+        onClick={() => setFlipped(!flipped)}
+        position={spawnPosition}
+        >
         {/* Front Face */}
         <mesh castShadow position={[0, 0, -0.0001]}>
           <planeGeometry args={[2, 1.5]} />
