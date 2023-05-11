@@ -1,19 +1,20 @@
 import { useRef, useMemo, useState } from 'react'
 import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber'
-import { Float } from '@react-three/drei'
 
-
-export default function Card({ startPosition, startRotation, spawnPosition, flippedRotation, glb }) {
+export default function Card({ index, activeCard, setActiveCard, startPosition, startRotation, spawnPosition, flippedRotation, glb }) {
   const { camera } = useThree();
   
-  const [ flipped, setFlipped ] = useState(false)
+  // const [ flipped, setFlipped ] = useState(false)
   const [ hasFlipped, setHasFlipped ] = useState(false)
   const [ hovering, setHovering ] = useState(false)
+
+  const flipped = useMemo(() => {
+    return activeCard === index
+  }, [activeCard, index])
   
   const cardMesh = useMemo(() => {
     glb.nodes.Card.material.side = THREE.FrontSide
-
     return glb.nodes.Card
   }, [glb])
 
@@ -63,7 +64,11 @@ export default function Card({ startPosition, startRotation, spawnPosition, flip
           ref={cardRef} 
           position={spawnPosition}
           onClick={() => {
-            setFlipped(!flipped)
+            if (activeCard === index) {
+              setActiveCard(null)
+            } else {
+              setActiveCard(index)
+            }
             setHasFlipped(true)
           }}
           onPointerEnter={() => {

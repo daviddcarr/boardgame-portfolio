@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
 import { OrbitControls, Environment, useHelper, useGLTF } from '@react-three/drei'
@@ -17,6 +17,8 @@ import Rubiks from './models/Rubiks'
 import { boardPositionsArray } from '../data/boardPositions'
 
 export default function Experience({ setFlipped, flipped, playerStep, setPlayerStep }) {
+
+    const [ activeCard, setActiveCard ] = useState(null)
 
     const [ viewport ] = useThree((state) => [state.viewport])
 
@@ -85,9 +87,10 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
                     return (
                         <Card 
                             key={index}
-                            flipped={flipped}
-                            onClick={() => setFlipped(!flipped)} 
-                            // startPosition={[8.5, 0.025, 0]}
+                            index={index}
+                            // flipped={index === activeCard}
+                            activeCard={activeCard}
+                            setActiveCard={setActiveCard}
                             startPosition={position}
                             startRotation={rotation}
                             flippedRotation={cardPosition.flippedRotation}
