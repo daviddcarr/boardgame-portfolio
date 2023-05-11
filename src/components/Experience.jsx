@@ -11,6 +11,8 @@ import Board from './models/Board'
 import BoardCollider from './models/BoardCollider'
 import TableCollider from './models/TableCollider'
 import Dice from './models/Dice'
+import ThreeLogo from './models/ThreeLogo'
+import Rubiks from './models/Rubiks'
 
 import { boardPositionsArray } from '../data/boardPositions'
 
@@ -18,11 +20,9 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
 
     const [ viewport ] = useThree((state) => [state.viewport])
 
-
     const rectLight = useRef()
 
     useHelper(rectLight, RectAreaLightHelper, 'red')
-
 
     const cardPositions = useMemo(() => {
         const positions = []
@@ -30,13 +30,13 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
             const  positionRotation = {
                 position: [
                     Math.sin(((Math.PI * 2) / (boardPositionsArray.length - 1)) * i) * 9.5,
-                    0.025,
+                    0.3,
                     Math.cos(((Math.PI * 2) / (boardPositionsArray.length - 1)) * i) * 9.5
                 ],
                 rotation: [
                     -Math.PI / 2,
                     0,
-                    ((Math.PI * 2) / (boardPositionsArray.length - 1)) * i + Math.PI / 2,
+                    ((Math.PI * 2) / (boardPositionsArray.length - 1)) * i,
                 ]
             }
             positions.push(positionRotation)
@@ -93,6 +93,8 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
     
             {/* Board */}
             <Board />
+            <ThreeLogo position={[2.3655, 1.5954, 1.3526]} />
+            <Rubiks position={[-3.7151, 1.1496, 1.9436]} />
         
             {/* Physics */}
             <Physics

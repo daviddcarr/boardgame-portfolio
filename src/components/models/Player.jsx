@@ -10,9 +10,6 @@ export default function Player({ currentStep }) {
     const { actions } = useAnimations(glb.animations, glb.scene)
     const { PlayerJump } = actions
 
-    console.log("actions", actions)
-
-    // Activate shadows on mesh
     useEffect(() => {
         glb.scene.traverse((child) => {
             if (child.isMesh) {
@@ -25,11 +22,9 @@ export default function Player({ currentStep }) {
         animatedPosition: boardPositionsArray[currentStep],
         config: { duration: 1000 },
         onStart: () => { 
-            console.log("onStart")
             PlayerJump.reset().play()
         },
         onRest: () => {
-            console.log("onRest")
             PlayerJump.stop() 
         },
     })

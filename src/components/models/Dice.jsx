@@ -11,8 +11,9 @@ export default function Dice({viewport, setTotal}) {
 
     const ref = useRef()
 
-    const [ hasStopped, setHasStopped ] = useState(true)
-    const [ hasBeenRolled, setHasBeenRolled ] = useState(false)
+    // const [ hasStopped, setHasStopped ] = useState(true)
+    const hasStoppedRef  = useRef(true)
+    
 
     const diceGlb = useGLTF('./glb/d6.glb')
 
@@ -24,19 +25,13 @@ export default function Dice({viewport, setTotal}) {
     const zStrength = 1
 
     const handleClick = () => {
-        console.log('click')
 
-        setHasBeenRolled(true)
-
-        if ( hasStopped ) {
-            console.log('and has stopped')
+        if ( hasStoppedRef.current ) {
             
             const velocity = new THREE.Vector3()
             velocity.x = Math.random() * xStrength - (xStrength / 2)
             velocity.y = Math.random() * 1
             velocity.z = Math.random() * zStrength - (zStrength / 2)
-
-            console.log(velocity)
             
             const torque = new THREE.Vector3()
             torque.x = Math.random() * 0.5 - 0.25
@@ -46,10 +41,10 @@ export default function Dice({viewport, setTotal}) {
             ref.current.applyImpulse(velocity, true)
             ref.current.applyTorqueImpulse(torque, true)
 
-            setHasStopped(false)
+            console.log("Dice is rolling...")
+            hasStoppedRef.current = false
         }
     }
-
 
     useFrame(() => {
         const vel = ref.current.linvel()
@@ -57,7 +52,7 @@ export default function Dice({viewport, setTotal}) {
 
         if ( ref.current && velVector.length() < 0.01) {
             
-            if ( !hasStopped && hasBeenRolled ) {
+            if (!hasStoppedRef.current) {
                 const rot = ref.current.rotation()
 
                 let faceValue = 0
@@ -77,13 +72,12 @@ export default function Dice({viewport, setTotal}) {
                     }
                 });
 
+                console.log("Recalculating with new face value: ", faceValue)
                 setTotal((prevTotal) => {
                     const newTotal = prevTotal + faceValue
                     return newTotal > boardPositionsArray.length - 1 ? boardPositionsArray.length - 1 : newTotal
                 });
-                setHasStopped(true)
-
-                console.log("Face value: ", faceValue)
+                hasStoppedRef.current = true
             }
         }
     })
@@ -94,7 +88,7 @@ export default function Dice({viewport, setTotal}) {
             ref={ref} 
             type="dynamic"
             colliders="cuboid"
-            position={[-8, 1, 0]}
+            position={[-8, 0.25, 0]}
             rotation={[0, 0, Math.PI * 0.5]}
             friction={0.5}
             mass={5}

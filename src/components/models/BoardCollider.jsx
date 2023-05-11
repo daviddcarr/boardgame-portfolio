@@ -7,7 +7,6 @@ export default function BoardCollider(props) {
     const gltf = useGLTF("glb/ColliderBoard.glb")
 
     const gltfMeshes = useMemo(() => {
-        console.log(gltf)
         return gltf.nodes.ColliderBoard
     }, [gltf])
 

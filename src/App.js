@@ -11,12 +11,13 @@ function App() {
   const [fontSize, setFontSize] = useState('10rem')
 
   useEffect(() => {
+    console.log('playerStep', playerStep)
+  }, [playerStep])
+
+  useEffect(() => {
     const handleResize = () => {
       const viewportWidth = window.innerWidth
       const newFontSize = Math.max(2, Math.min(15, viewportWidth * 0.008))
-      console.log("Test", viewportWidth * 0.01)
-      console.log("Viewport width: ", viewportWidth)
-      console.log("New font size: ", newFontSize)
       setFontSize(`${newFontSize}rem`)
     }
     handleResize()
