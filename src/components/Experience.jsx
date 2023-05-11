@@ -2,7 +2,7 @@ import React from 'react'
 import { useMemo, useRef } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
-import { OrbitControls, Environment, useHelper } from '@react-three/drei'
+import { OrbitControls, Environment, useHelper, useGLTF } from '@react-three/drei'
 import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js'
 
 import Card from './models/Card'
@@ -24,6 +24,10 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
 
     useHelper(rectLight, RectAreaLightHelper, 'red')
 
+    const preload = {
+        card: useGLTF('./glb/Card.glb'),
+    }
+
     const cardPositions = useMemo(() => {
         const positions = []
         for (let i = 0; i < playerStep; i++) {
@@ -37,6 +41,11 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
                     -Math.PI / 2,
                     0,
                     ((Math.PI * 2) / (boardPositionsArray.length - 1)) * i,
+                ],
+                flippedRotation: [
+                    Math.PI / 2,
+                    0,
+                    Math.PI - (((Math.PI * 2) / (boardPositionsArray.length - 1)) * i),
                 ]
             }
             positions.push(positionRotation)
@@ -81,7 +90,9 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
                             // startPosition={[8.5, 0.025, 0]}
                             startPosition={position}
                             startRotation={rotation}
+                            flippedRotation={cardPosition.flippedRotation}
                             spawnPosition={[0, 10, 0]}
+                            glb={preload.card}
                             />
                     )
                 })

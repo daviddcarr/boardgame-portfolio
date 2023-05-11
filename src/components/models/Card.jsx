@@ -1,17 +1,19 @@
 import { useRef, useMemo, useState } from 'react'
 import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
+import { Float } from '@react-three/drei'
 
 
-export default function Card({ startPosition, startRotation, spawnPosition }) {
+export default function Card({ startPosition, startRotation, spawnPosition, flippedRotation, glb }) {
   const { camera } = useThree();
   
   const [ flipped, setFlipped ] = useState(false)
+  const [ hasFlipped, setHasFlipped ] = useState(false)
+  const [ hovering, setHovering ] = useState(false)
   
-  const glb = useGLTF('./glb/Card.glb')
-
   const cardMesh = useMemo(() => {
+    glb.nodes.Card.material.side = THREE.FrontSide
+
     return glb.nodes.Card
   }, [glb])
 
@@ -21,9 +23,15 @@ export default function Card({ startPosition, startRotation, spawnPosition }) {
   const originalPosition = useMemo(() => {
       return new THREE.Vector3(...startPosition)
   }, [startPosition])
+  const hoverPosition = useMemo(() => {
+      return new THREE.Vector3(...startPosition).add(new THREE.Vector3(0, 0.1, 0))
+  }, [startPosition])
   const originalRotation = useMemo(() => {
       return new THREE.Quaternion().setFromEuler(new THREE.Euler(...startRotation))
   }, [startRotation])
+  const hasFlippedRotation = useMemo(() => {
+      return new THREE.Quaternion().setFromEuler(new THREE.Euler(...flippedRotation))
+  }, [flippedRotation])
 
   useFrame(() => {
       if (flipped) {
@@ -44,20 +52,30 @@ export default function Card({ startPosition, startRotation, spawnPosition }) {
           cardRef.current.quaternion.slerp(targetRotation.current, 0.1)
 
       } else {
-          cardRef.current.position.lerp(originalPosition, 0.1);
-          cardRef.current.quaternion.slerp(originalRotation, 0.1)
+          cardRef.current.position.lerp(hovering ? hoverPosition : originalPosition, 0.1);
+          cardRef.current.quaternion.slerp(hasFlipped ? hasFlippedRotation : originalRotation, 0.1)
       }
     })
   
   return (
-    <mesh
-      castShadow
-      ref={cardRef} 
-      position={spawnPosition}
-      onClick={() => setFlipped(!flipped)}
-      geometry={cardMesh.geometry}
-      material={cardMesh.material}
-      />
+        <mesh
+          castShadow
+          ref={cardRef} 
+          position={spawnPosition}
+          onClick={() => {
+            setFlipped(!flipped)
+            setHasFlipped(true)
+          }}
+          onPointerEnter={() => {
+            setHovering(true)
+          }}
+          onPointerLeave={() => {
+            setHovering(false)
+          }}
+          geometry={cardMesh.geometry}
+          material={cardMesh.material}
+          
+          />
   )
 }
   
