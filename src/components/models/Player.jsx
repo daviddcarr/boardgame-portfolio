@@ -12,9 +12,14 @@ export default function Player({ currentStep }) {
 
     console.log("actions", actions)
 
-    // useEffect(() => {
-    //     PlayerJump.play()
-    // }, [PlayerJump])
+    // Activate shadows on mesh
+    useEffect(() => {
+        glb.scene.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true
+            }
+        })
+    }, [glb])
 
     const { animatedPosition } = useSpring({ 
         animatedPosition: boardPositionsArray[currentStep],

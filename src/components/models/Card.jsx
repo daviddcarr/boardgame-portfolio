@@ -14,10 +14,10 @@ export default function Card({ startPosition, startRotation, spawnPosition }) {
 
     const originalPosition = useMemo(() => {
         return new THREE.Vector3(...startPosition)
-    }, [])
+    }, [startPosition])
     const originalRotation = useMemo(() => {
         return new THREE.Quaternion().setFromEuler(new THREE.Euler(...startRotation))
-    }, [])
+    }, [startRotation])
 
     useFrame(() => {
         if (flipped) {

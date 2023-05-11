@@ -1,41 +1,35 @@
+import React from 'react'
 import { Canvas }  from '@react-three/fiber'
-import { OrbitControls, Environment } from '@react-three/drei'
+import { EffectComposer, Vignette } from '@react-three/postprocessing'
 
 import Experience from './Experience'
 
+
 export  default function Scene({ setFlipped, flipped, playerStep, setPlayerStep }) {
     
-
     return (
         <Canvas
-            shadows
+            shadows={true}
             camera={{ position: [0, 4, 10], fov: 50 }}
+            className="z-10"
             >
+            <EffectComposer>
+                <Vignette offset={0.1} darkness={0.7} />
+            </EffectComposer>
 
-        <ambientLight intensity={0.25} />
-
-        <directionalLight
-          position={[0, 5, 1]}
-          intensity={1}
-          castShadow
-          />
-
-        <Environment preset="city" />
-
-        <OrbitControls
-        maxPolarAngle={Math.PI / 2 - 0.1}
-          maxDistance={25}
-          minDistance={5}
-          enablePan={false}
-          />
-
-        <Experience
-            setFlipped={setFlipped}
-            flipped={flipped}
-            playerStep={playerStep}
-            setPlayerStep={setPlayerStep}
-            />
-
-      </Canvas>
+            <Experience
+                setFlipped={setFlipped}
+                flipped={flipped}
+                playerStep={playerStep}
+                setPlayerStep={setPlayerStep}
+                />
+        </Canvas>
     )
 }
+
+{/* (possible exports: Autofocus, Bloom, BrightnessContrast, ChromaticAberration, 
+ColorAverage, ColorDepth, Depth, DepthOfField, DotScreen, EffectComposer, 
+EffectComposerContext, Glitch, GodRays, Grid, HueSaturation, LUT, Noise, 
+Outline, Pixelation, SMAA, SSAO, SSR, Scanline, Select, Selection, SelectiveBloom, 
+Sepia, ShockWave, Texture, TiltShift, TiltShift2, TiltShiftEffect, ToneMapping, Vignette, 
+resolveRef, selectionContext, useVector2, wrapEffect) */}

@@ -8,24 +8,34 @@ import Scene from './components/Scene'
 function App() {
   const [flipped, setFlipped] = useState(false)
   const [playerStep, setPlayerStep] = useState(0)
+  const [fontSize, setFontSize] = useState('10rem')
 
   useEffect(() => {
-    console.log('playerStep', playerStep)
-  }, [playerStep])
+    const handleResize = () => {
+      const viewportWidth = window.innerWidth
+      const newFontSize = Math.max(2, Math.min(15, viewportWidth * 0.008))
+      console.log("Test", viewportWidth * 0.01)
+      console.log("Viewport width: ", viewportWidth)
+      console.log("New font size: ", newFontSize)
+      setFontSize(`${newFontSize}rem`)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
-    <div className="h-screen w-full">
+    <div className="h-screen w-full bg-red-300">
       
       <Scene setFlipped={setFlipped} flipped={flipped}  playerStep={playerStep} setPlayerStep={setPlayerStep} />
 
-      {/* <div className="absolute bottom-0 left-0 w-full flex justify-center">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => setPlayerStep(playerStep + 1)}
-          >
-          Next Step
-        </button>
-      </div> */}
+      <div className="absolute inset-0 w-full flex justify-center z-0">
+        <h1 className="font-heading text-red-500"
+          style={{
+            fontSize: fontSize,
+          }}
+          >DAVID DYLAN</h1>
+      </div>
 
     </div>
   );

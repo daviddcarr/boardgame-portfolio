@@ -1,6 +1,9 @@
-import { useMemo } from 'react'
+import React from 'react'
+import { useMemo, useRef } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
+import { OrbitControls, Environment, useHelper } from '@react-three/drei'
+import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js'
 
 import Card from './models/Card'
 import Player from './models/Player'
@@ -14,6 +17,12 @@ import { boardPositionsArray } from '../data/boardPositions'
 export default function Experience({ setFlipped, flipped, playerStep, setPlayerStep }) {
 
     const [ viewport ] = useThree((state) => [state.viewport])
+
+
+    const rectLight = useRef()
+
+    useHelper(rectLight, RectAreaLightHelper, 'red')
+
 
     const cardPositions = useMemo(() => {
         const positions = []
@@ -37,6 +46,29 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
 
     return (
         <>
+            <directionalLight
+                position={[0, 5, 1]}
+                intensity={0.5}
+                castShadow
+                shadow-camera-top={12}
+                shadow-camera-right={12}
+                shadow-camera-bottom={-12}
+                shadow-camera-left={-12}
+                shadow-mapSize-width={2048}
+                shadow-bias={-0.0005}
+                />
+
+
+            <Environment preset="warehouse" />
+
+            <OrbitControls
+                maxPolarAngle={Math.PI / 2 - 0.1}
+                maxDistance={25}
+                minDistance={5}
+                enablePan={false}
+                />
+
+
             {/* Card */}
             {
                 cardPositions.map((cardPosition, index) => {
