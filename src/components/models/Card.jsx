@@ -1,9 +1,10 @@
 import { useRef, useMemo, useState } from 'react'
 import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber'
+import { useTexture } from '@react-three/drei'
 
 export default function Card({ index, activeCard, setActiveCard, startPosition, startRotation, spawnPosition, flippedRotation, glb, textures }) {
-  const { camera } = useThree();
+  const { camera } = useThree()
   
   // const [ flipped, setFlipped ] = useState(false)
   const [ hasFlipped, setHasFlipped ] = useState(false)
@@ -18,27 +19,23 @@ export default function Card({ index, activeCard, setActiveCard, startPosition, 
     return glb.nodes.Card
   }, [glb])
 
-  const cardMaterial = useMemo(() => {
-    const texture = textures[index]
-    texture.center.set(0.5, 0.5);
-    texture.rotation = Math.PI;
-    texture.repeat.x = -1;
-    texture.needUpdate = true;
+  const cardTexture = useTexture(`./textures/card_${index+1}.png`)
 
+  const cardMaterial = useMemo(() => {
+    cardTexture.center.set(0.5, 0.5)
+    cardTexture.rotation = Math.PI
+    cardTexture.repeat.x = -1
+    cardTexture.needUpdate = true
 
     const mat = new THREE.MeshBasicMaterial({
-      map: textures[index],
-      // normalMap: cardMesh.material.normalMap,
-      // roughnessMap: cardMesh.material.roughnessMap,
-      // metalnessMap: cardMesh.material.metalnessMap,
-      // emissiveMap: textures[index],
+      map: cardTexture,
       side: THREE.FrontSide
     })
     return mat
-  }, [cardMesh, textures, index])
+  }, [cardTexture])
 
   const targetRotation = useRef(new THREE.Quaternion())
-  const cardRef = useRef();
+  const cardRef = useRef()
 
   const originalPosition = useMemo(() => {
       return new THREE.Vector3(...startPosition)
@@ -60,7 +57,7 @@ export default function Card({ index, activeCard, setActiveCard, startPosition, 
               camera.position.y * 0.9,
               camera.position.z * 0.9
           )
-          cardRef.current.position.lerp(newPosition, 0.1);
+          cardRef.current.position.lerp(newPosition, 0.1)
           
           targetRotation.current.setFromRotationMatrix(
               new THREE.Matrix4().lookAt(
@@ -72,7 +69,7 @@ export default function Card({ index, activeCard, setActiveCard, startPosition, 
           cardRef.current.quaternion.slerp(targetRotation.current, 0.1)
 
       } else {
-          cardRef.current.position.lerp(hovering ? hoverPosition : originalPosition, 0.1);
+          cardRef.current.position.lerp(hovering ? hoverPosition : originalPosition, 0.1)
           cardRef.current.quaternion.slerp(hasFlipped ? hasFlippedRotation : originalRotation, 0.1)
       }
     })

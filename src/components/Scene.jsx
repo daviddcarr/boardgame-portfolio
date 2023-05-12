@@ -26,10 +26,3 @@ export  default function Scene({ setFlipped, flipped, playerStep, setPlayerStep 
             </Canvas>
     )
 }
-
-{/* (possible exports: Autofocus, Bloom, BrightnessContrast, ChromaticAberration, 
-ColorAverage, ColorDepth, Depth, DepthOfField, DotScreen, EffectComposer, 
-EffectComposerContext, Glitch, GodRays, Grid, HueSaturation, LUT, Noise, 
-Outline, Pixelation, SMAA, SSAO, SSR, Scanline, Select, Selection, SelectiveBloom, 
-Sepia, ShockWave, Texture, TiltShift, TiltShift2, TiltShiftEffect, ToneMapping, Vignette, 
-resolveRef, selectionContext, useVector2, wrapEffect) */}
