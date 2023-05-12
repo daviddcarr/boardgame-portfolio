@@ -80,7 +80,7 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
                 />
 
 
-            {/* Card */}
+            {/* Cards */}
             {
                 cardPositions.map((cardPosition, index) => {
                     const { position, rotation } = cardPosition
@@ -88,7 +88,6 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
                         <Card 
                             key={index}
                             index={index}
-                            // flipped={index === activeCard}
                             activeCard={activeCard}
                             setActiveCard={setActiveCard}
                             startPosition={position}

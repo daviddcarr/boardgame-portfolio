@@ -88,7 +88,7 @@ export default function Dice({viewport, setTotal}) {
             ref={ref} 
             type="dynamic"
             colliders="cuboid"
-            position={[-8, 0.25, 0]}
+            position={[0, 0.25, 8]}
             rotation={[0, 0, Math.PI * 0.5]}
             friction={0.5}
             mass={5}
