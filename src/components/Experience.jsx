@@ -1,5 +1,6 @@
 import React from 'react'
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState, useEffect } from 'react'
+import { TextureLoader } from 'three'
 import { useThree } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
 import { OrbitControls, Environment, useHelper, useGLTF } from '@react-three/drei'
@@ -16,9 +17,51 @@ import Rubiks from './models/Rubiks'
 
 import { boardPositionsArray } from '../data/boardPositions'
 
+const preloadTextures  = async () => {
+    const textureLoader = new TextureLoader()
+
+    const images = [
+        './textures/card_1.png',
+        './textures/card_2.png',
+        './textures/card_3.png',
+        './textures/card_4.png',
+        './textures/card_5.png',
+        './textures/card_6.png',
+        './textures/card_7.png',
+        './textures/card_8.png',
+        './textures/card_9.png',
+        './textures/card_10.png',
+        './textures/card_11.png',
+        './textures/card_12.png',
+        './textures/card_13.png',
+        './textures/card_14.png',
+        './textures/card_15.png',
+        './textures/card_16.png',
+        './textures/card_17.png',
+        './textures/card_18.png',
+        './textures/card_19.png',
+        './textures/card_20.png',
+        './textures/card_21.png',
+        './textures/card_22.png',
+        './textures/card_23.png',
+        './textures/card_24.png',
+        './textures/card_25.png',
+        './textures/card_26.png',
+    ]
+
+    const loadImages = images.map(image => 
+        new Promise((resolve, reject) => 
+            textureLoader.load(image, resolve, undefined, reject)
+        )
+    )
+
+    return await Promise.all(loadImages)
+}
+
 export default function Experience({ setFlipped, flipped, playerStep, setPlayerStep }) {
 
     const [ activeCard, setActiveCard ] = useState(null)
+    const [ cardTextures, setCardTextures ] = useState([])
 
     const [ viewport ] = useThree((state) => [state.viewport])
 
@@ -27,8 +70,12 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
     useHelper(rectLight, RectAreaLightHelper, 'red')
 
     const preload = {
-        card: useGLTF('./glb/Card.glb')
+        card: useGLTF('./glb/Card.glb'),
     }
+
+    useEffect(() => {
+        preloadTextures().then(textures => setCardTextures(textures)).catch(err => console.log(err))
+    }, [])
 
     const cardPositions = useMemo(() => {
         const positions = []
@@ -95,6 +142,7 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
                             flippedRotation={cardPosition.flippedRotation}
                             spawnPosition={[0, 10, 0]}
                             glb={preload.card}
+                            textures={cardTextures}
                             />
                     )
                 })
