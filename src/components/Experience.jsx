@@ -2,7 +2,7 @@ import React from 'react'
 import { useMemo, useRef, useState } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
-import { OrbitControls, Environment, useHelper, useGLTF } from '@react-three/drei'
+import { OrbitControls, Environment, useHelper, useGLTF, useTexture } from '@react-three/drei'
 import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js'
 
 import Card from './models/Card'
@@ -28,6 +28,34 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
 
     const preload = {
         card: useGLTF('./glb/Card.glb'),
+        cardTextures: [
+            useTexture('./textures/card_1.png'),
+            useTexture('./textures/card_2.png'),
+            useTexture('./textures/card_3.png'),
+            useTexture('./textures/card_4.png'),
+            useTexture('./textures/card_5.png'),
+            useTexture('./textures/card_6.png'),
+            useTexture('./textures/card_7.png'),
+            useTexture('./textures/card_8.png'),
+            useTexture('./textures/card_9.png'),
+            useTexture('./textures/card_10.png'),
+            useTexture('./textures/card_11.png'),
+            useTexture('./textures/card_12.png'),
+            useTexture('./textures/card_13.png'),
+            useTexture('./textures/card_14.png'),
+            useTexture('./textures/card_15.png'),
+            useTexture('./textures/card_16.png'),
+            useTexture('./textures/card_17.png'),
+            useTexture('./textures/card_18.png'),
+            useTexture('./textures/card_19.png'),
+            useTexture('./textures/card_20.png'),
+            useTexture('./textures/card_21.png'),
+            useTexture('./textures/card_22.png'),
+            useTexture('./textures/card_23.png'),
+            useTexture('./textures/card_24.png'),
+            useTexture('./textures/card_25.png'),
+            useTexture('./textures/card_26.png'),
+        ]
     }
 
     const cardPositions = useMemo(() => {
@@ -58,7 +86,7 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
     return (
         <>
             <directionalLight
-                position={[0, 5, 1]}
+                position={[0, 5, 0]}
                 intensity={0.5}
                 castShadow
                 shadow-camera-top={12}
@@ -95,6 +123,7 @@ export default function Experience({ setFlipped, flipped, playerStep, setPlayerS
                             flippedRotation={cardPosition.flippedRotation}
                             spawnPosition={[0, 10, 0]}
                             glb={preload.card}
+                            textures={preload.cardTextures}
                             />
                     )
                 })

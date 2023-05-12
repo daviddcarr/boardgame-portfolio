@@ -2,7 +2,7 @@ import { useRef, useMemo, useState } from 'react'
 import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber'
 
-export default function Card({ index, activeCard, setActiveCard, startPosition, startRotation, spawnPosition, flippedRotation, glb }) {
+export default function Card({ index, activeCard, setActiveCard, startPosition, startRotation, spawnPosition, flippedRotation, glb, textures }) {
   const { camera } = useThree();
   
   // const [ flipped, setFlipped ] = useState(false)
@@ -17,6 +17,25 @@ export default function Card({ index, activeCard, setActiveCard, startPosition, 
     glb.nodes.Card.material.side = THREE.FrontSide
     return glb.nodes.Card
   }, [glb])
+
+  const cardMaterial = useMemo(() => {
+    const texture = textures[index]
+    texture.center.set(0.5, 0.5);
+    texture.rotation = Math.PI;
+    texture.repeat.x = -1;
+    texture.needUpdate = true;
+
+
+    const mat = new THREE.MeshBasicMaterial({
+      map: textures[index],
+      // normalMap: cardMesh.material.normalMap,
+      // roughnessMap: cardMesh.material.roughnessMap,
+      // metalnessMap: cardMesh.material.metalnessMap,
+      // emissiveMap: textures[index],
+      side: THREE.FrontSide
+    })
+    return mat
+  }, [cardMesh, textures, index])
 
   const targetRotation = useRef(new THREE.Quaternion())
   const cardRef = useRef();
@@ -78,7 +97,7 @@ export default function Card({ index, activeCard, setActiveCard, startPosition, 
             setHovering(false)
           }}
           geometry={cardMesh.geometry}
-          material={cardMesh.material}
+          material={cardMaterial}
           
           />
   )

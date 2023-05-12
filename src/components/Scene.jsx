@@ -1,19 +1,16 @@
 import React from 'react'
-import { Suspense } from 'react'
 import { Canvas }  from '@react-three/fiber'
 import { EffectComposer, Vignette } from '@react-three/postprocessing'
 
 import Experience from './Experience'
-import Loading from './Loading'
 
 
 export  default function Scene({ setFlipped, flipped, playerStep, setPlayerStep }) {
     
     return (
-        <Suspense fallback={<Loading />}>
             <Canvas
                 shadows={true}
-                camera={{ position: [0, 4, 10], fov: 50 }}
+                camera={{ position: [0, 4, 14], fov: 50 }}
                 className="z-10"
                 >
                 <EffectComposer>
@@ -27,7 +24,6 @@ export  default function Scene({ setFlipped, flipped, playerStep, setPlayerStep 
                     setPlayerStep={setPlayerStep}
                     />
             </Canvas>
-        </Suspense>
     )
 }
 
