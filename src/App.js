@@ -43,7 +43,7 @@ function App() {
   }
 
   return (
-    <main className="h-screen w-full">
+    <main className="h-screen w-full overflow-hidden">
       <Suspense fallback={<Loading />}>
 
       <Scene activeCard={activeCard} setActiveCard={setActiveCard} playerStep={playerStep} updatePlayerRoll={updatePlayerRoll} setPlayerStep={setPlayerStep} />
