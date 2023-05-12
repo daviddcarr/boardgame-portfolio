@@ -2,3 +2,7 @@ main {
   background: rgb(255,200,200);
   background: radial-gradient(circle, rgba(255,200,200,1) 0%, rgba(255,158,158,1) 100%);
 }
+
+body, #root, main {
+  overflow: hidden;
+}
