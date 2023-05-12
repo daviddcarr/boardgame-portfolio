@@ -58,9 +58,9 @@ const preloadTextures  = async () => {
     return await Promise.all(loadImages)
 }
 
-export default function Experience({ setFlipped, flipped, playerStep, setPlayerStep }) {
+export default function Experience({ activeCard, setActiveCard, playerStep, setPlayerStep }) {
 
-    const [ activeCard, setActiveCard ] = useState(null)
+    // const [ activeCard, setActiveCard ] = useState(null)
     const [ cardTextures, setCardTextures ] = useState([])
 
     const [ viewport ] = useThree((state) => [state.viewport])

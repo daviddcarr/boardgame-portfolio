@@ -4,7 +4,7 @@ import Loading from './components/Loading'
 import { GiClick, GiPerspectiveDiceSixFacesOne, GiCardPick } from 'react-icons/gi'
 import { MdPinch } from 'react-icons/md'
 import { HiOutlineArrowsExpand } from 'react-icons/hi'
-import { TbInfoHexagon } from 'react-icons/tb'
+import { TbInfoHexagon, TbHexagonLetterX } from 'react-icons/tb'
 
 import { BsLinkedin, BsGithub, BsImages, BsFillFileEarmarkPdfFill } from 'react-icons/bs'
 
@@ -17,6 +17,8 @@ function App() {
   const [flipped, setFlipped] = useState(false)
   const [playerStep, setPlayerStep] = useState(0)
   const [fontSize, setFontSize] = useState('10rem')
+  const [ activeCard, setActiveCard ] = useState(null)
+
 
   const [showInfo, setShowInfo] = useState(false)
 
@@ -35,7 +37,7 @@ function App() {
     <main className="h-screen w-full">
       <Suspense fallback={<Loading />}>
 
-      <Scene setFlipped={setFlipped} flipped={flipped}  playerStep={playerStep} setPlayerStep={setPlayerStep} />
+      <Scene activeCard={activeCard} setActiveCard={setActiveCard} playerStep={playerStep} setPlayerStep={setPlayerStep} />
 
       <div className={`absolute inset-0 w-full flex  flex-col items-center ${ showInfo ? 'z-20 backdrop-blur bg-opacity-30 bg-gray-500' : 'z-0' }`}
         onClick={() => setShowInfo(false)}
@@ -54,6 +56,7 @@ function App() {
         {
           showInfo && (
           <div className="mt-[10vh] space-y-6">
+
             <div className="space-y-2">
               <p className="text-lg md:text-xl text-white"><MdPinch className="inline text-xl md:text-2xl" /> Pinch / Scroll to Zoom</p>
               <p className="text-lg md:text-xl text-white"><HiOutlineArrowsExpand className="inline text-xl md:text-2xl" /> Drag to Move</p>
@@ -70,7 +73,7 @@ function App() {
                 className="text-white text-lg md:text-xl flex items-center space-x-2"
                 aria-label="Link to David Dylan's 2D Portfolio site"
                 >
-                  <BsImages className="inline text-xl md:text-2xl" /> <span>2D Portfolio</span>
+                  <BsImages className="inline text-xl md:text-2xl" /> <span className="underline">2D Portfolio</span>
               </a>
               <a
                 href="https://www.linkedin.com/in/david--dylan/"
@@ -79,7 +82,7 @@ function App() {
                 className="text-white text-lg md:text-xl flex items-center space-x-2"
                 aria-label="Link to David Dylan's LinkedIn Profile"
                 >
-                 <BsLinkedin className="inline text-xl md:text-2xl" /> <span>LinkedIn</span>
+                 <BsLinkedin className="inline text-xl md:text-2xl" /> <span className="underline">LinkedIn</span>
               </a>
               <a
                 href="https://www.github.com/daviddcarr"
@@ -88,7 +91,7 @@ function App() {
                 className="text-white text-lg md:text-xl flex items-center space-x-2"
                 aria-label="Link to David Dylan's GitHub Profile"
                 >
-                  <BsGithub className="inline text-xl md:text-2xl" /> <span>GitHub</span>
+                  <BsGithub className="inline text-xl md:text-2xl" /> <span className="underline">GitHub</span>
               </a>
               <a
                 href="https://www.daviddylancarr.com/wp-content/uploads/2023/02/DavidCarr_Resume_Nov2023.pdf"
@@ -97,17 +100,17 @@ function App() {
                 className="text-white text-lg md:text-xl flex items-center space-x-2"
                 aria-label="Link to David Dylan's Resume"
                 >
-                  <BsFillFileEarmarkPdfFill className="inline text-xl md:text-2xl" /> <span>Resume</span>
+                  <BsFillFileEarmarkPdfFill className="inline text-xl md:text-2xl" /> <span className="underline">Resume</span>
               </a>
             </div>
           </div>
           )
         }
       </div>
-      <div className="absolute bottom-0 right-0 m-4 z-30">
+      <div className={`absolute bottom-0 right-0 m-4 z-30 transition-transform ${ activeCard === null ? 'translate-x-0' : 'translate-x-32' }`}>
         <button className="bg-gray-500 hover:bg-red-500 text-white p-2 rounded-md flex items-center space-x-2"
           onClick={() => setShowInfo(!showInfo)}
-          ><TbInfoHexagon /> <span>Info</span></button>
+          >{ showInfo ? <TbHexagonLetterX /> : <TbInfoHexagon /> } <span>Info</span></button>
       </div>
       </Suspense>
     </main>
