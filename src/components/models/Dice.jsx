@@ -7,7 +7,7 @@ import { RigidBody } from "@react-three/rapier"
 import { diceFaces } from "../../data/diceFaces"
 import { boardPositionsArray } from "../../data/boardPositions"
 
-export default function Dice({viewport, setTotal}) {
+export default function Dice({setTotal, updatePlayerRoll}) {
 
     const ref = useRef()
 
@@ -74,10 +74,11 @@ export default function Dice({viewport, setTotal}) {
                 });
 
                 console.log("Recalculating with new face value: ", faceValue)
-                setTotal((prevTotal) => {
-                    const newTotal = prevTotal + faceValue
-                    return newTotal > boardPositionsArray.length - 1 ? boardPositionsArray.length - 1 : newTotal
-                });
+                // setTotal((prevTotal) => {
+                //     const newTotal = prevTotal + faceValue
+                //     return newTotal > boardPositionsArray.length - 1 ? boardPositionsArray.length - 1 : newTotal
+                // });
+                updatePlayerRoll(faceValue)
                 hasStoppedRef.current = true
             }
         }

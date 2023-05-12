@@ -5,8 +5,9 @@ import { GiClick, GiPerspectiveDiceSixFacesOne, GiCardPick } from 'react-icons/g
 import { MdPinch } from 'react-icons/md'
 import { HiOutlineArrowsExpand } from 'react-icons/hi'
 import { TbInfoHexagon, TbHexagonLetterX } from 'react-icons/tb'
-
 import { BsLinkedin, BsGithub, BsImages, BsFillFileEarmarkPdfFill } from 'react-icons/bs'
+
+import { boardPositionsArray } from './data/boardPositions'
 
 import './App.css'
 
@@ -14,9 +15,9 @@ import Scene from './components/Scene'
 
 
 function App() {
-  const [flipped, setFlipped] = useState(false)
-  const [playerStep, setPlayerStep] = useState(0)
-  const [fontSize, setFontSize] = useState('10rem')
+  const [ previousRoll, setPreviousRoll ] = useState(0)
+  const [ playerStep, setPlayerStep ] = useState(0)
+  const [ fontSize, setFontSize ] = useState('10rem')
   const [ activeCard, setActiveCard ] = useState(null)
 
 
@@ -33,11 +34,19 @@ function App() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  const updatePlayerRoll = (roll) => {
+    setPreviousRoll(roll)
+    setPlayerStep((prevTotal) => {
+      const newTotal = prevTotal + roll
+      return newTotal > boardPositionsArray.length - 1 ? boardPositionsArray.length - 1 : newTotal
+  });
+  }
+
   return (
     <main className="h-screen w-full">
       <Suspense fallback={<Loading />}>
 
-      <Scene activeCard={activeCard} setActiveCard={setActiveCard} playerStep={playerStep} setPlayerStep={setPlayerStep} />
+      <Scene activeCard={activeCard} setActiveCard={setActiveCard} playerStep={playerStep} updatePlayerRoll={updatePlayerRoll} setPlayerStep={setPlayerStep} />
 
       <div className={`absolute inset-0 w-full flex  flex-col items-center ${ showInfo ? 'z-20 backdrop-blur bg-opacity-30 bg-gray-500' : 'z-0' }`}
         onClick={() => setShowInfo(false)}
@@ -111,6 +120,9 @@ function App() {
         <button className="bg-gray-500 hover:bg-red-500 text-white p-2 rounded-md flex items-center space-x-2"
           onClick={() => setShowInfo(!showInfo)}
           >{ showInfo ? <TbHexagonLetterX /> : <TbInfoHexagon /> } <span>Info</span></button>
+      </div>
+      <div className='absolute bottom-0 left-0 m-4 z-30'>
+        <p className="text-white font-bold uppercase">Roll: { previousRoll }</p>
       </div>
       </Suspense>
     </main>

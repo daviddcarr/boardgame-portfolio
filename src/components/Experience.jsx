@@ -58,7 +58,7 @@ const preloadTextures  = async () => {
     return await Promise.all(loadImages)
 }
 
-export default function Experience({ activeCard, setActiveCard, playerStep, setPlayerStep }) {
+export default function Experience({ activeCard, setActiveCard, playerStep, setPlayerStep, updatePlayerRoll }) {
 
     // const [ activeCard, setActiveCard ] = useState(null)
     const [ cardTextures, setCardTextures ] = useState([])
@@ -164,7 +164,7 @@ export default function Experience({ activeCard, setActiveCard, playerStep, setP
                 >
                 <TableCollider />
                 <BoardCollider />
-                <Dice viewport={viewport} setTotal={setPlayerStep} position={[0, 0.25, 0]} />
+                <Dice updatePlayerRoll={updatePlayerRoll} position={[0, 0.25, 0]} />
             </Physics>
         </>
     )
