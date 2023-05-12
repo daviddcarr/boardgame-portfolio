@@ -121,7 +121,7 @@ function App() {
           onClick={() => setShowInfo(!showInfo)}
           >{ showInfo ? <TbHexagonLetterX /> : <TbInfoHexagon /> } <span>Info</span></button>
       </div>
-      <div className='absolute bottom-0 left-0 m-4 z-30'>
+      <div className={`absolute bottom-0 left-0 m-4 z-30 transition-transform ${ activeCard === null ? 'translate-x-0' : '-translate-x-32' }`}>
         <p className="text-white font-bold uppercase">Roll: { previousRoll }</p>
       </div>
       </Suspense>
