@@ -11,7 +11,8 @@ export default function Dice({viewport, setTotal}) {
 
     const ref = useRef()
 
-    // const [ hasStopped, setHasStopped ] = useState(true)
+    const [hitSound] = useState(new Audio('./audio/hit.mp3'))
+
     const hasStoppedRef  = useRef(true)
     
 
@@ -82,6 +83,15 @@ export default function Dice({viewport, setTotal}) {
         }
     })
 
+    const playHitSound = () => {
+        const vel = ref.current.linvel()
+        const velVector = new THREE.Vector3(vel.x, vel.y, vel.z)
+
+        hitSound.currentTime = 0
+        hitSound.volume = Math.min(velVector.length() / 10, 1)
+        hitSound.play()
+    }
+
 
     return (
         <RigidBody 
@@ -92,6 +102,7 @@ export default function Dice({viewport, setTotal}) {
             rotation={[0, 0, Math.PI * 0.5]}
             friction={0.5}
             mass={5}
+            onCollisionEnter={playHitSound}
             >
             <mesh
                 geometry={diceMesh.geometry}

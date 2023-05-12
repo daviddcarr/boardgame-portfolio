@@ -8,6 +8,8 @@ export default function Player({ currentStep }) {
 
     const [nextStep, setNextStep] = useState(0)
 
+    const [hitSound] = useState(new Audio('./audio/player_tap.wav'))
+
     const glb = useGLTF('./glb/Player.glb')
     const { actions } = useAnimations(glb.animations, glb.scene)
     const { PlayerJump } = actions
@@ -22,7 +24,7 @@ export default function Player({ currentStep }) {
 
     useEffect(() => {
         if (currentStep > nextStep) {
-            setNextStep(nextStep + 1)
+            setNextStep((n) => n + 1)
         }
     }, [currentStep])
 
@@ -34,6 +36,9 @@ export default function Player({ currentStep }) {
         },
         onRest: () => {
             PlayerJump.stop()
+            hitSound.currentTime = 0
+            hitSound.volume = 0.05
+            hitSound.play()
             if (nextStep < currentStep) {
                 setNextStep(nextStep + 1)
             }

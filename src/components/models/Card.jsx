@@ -6,9 +6,10 @@ import { useTexture } from '@react-three/drei'
 export default function Card({ index, activeCard, setActiveCard, startPosition, startRotation, spawnPosition, flippedRotation, glb, textures }) {
   const { camera } = useThree()
   
-  // const [ flipped, setFlipped ] = useState(false)
   const [ hasFlipped, setHasFlipped ] = useState(false)
   const [ hovering, setHovering ] = useState(false)
+  const [ revealSound ] = useState(new Audio('./audio/card_reveal.wav'))
+  const [ hideSound ] = useState(new Audio('./audio/card_hide.wav'))
 
   const flipped = useMemo(() => {
     return activeCard === index
@@ -73,6 +74,18 @@ export default function Card({ index, activeCard, setActiveCard, startPosition, 
           cardRef.current.quaternion.slerp(hasFlipped ? hasFlippedRotation : originalRotation, 0.1)
       }
     })
+
+  const playRevealSound = () => {
+    revealSound.currentTime = 0
+    revealSound.volume = 0.25
+    revealSound.play()
+  }
+
+  const playHideSound = () => {
+    hideSound.currentTime = 0
+    hideSound.volume = 0.25
+    hideSound.play()
+  }
   
   return (
         <mesh
@@ -82,8 +95,10 @@ export default function Card({ index, activeCard, setActiveCard, startPosition, 
           onClick={() => {
             if (activeCard === index) {
               setActiveCard(null)
+              playHideSound()
             } else {
               setActiveCard(index)
+              playRevealSound()
             }
             setHasFlipped(true)
           }}
