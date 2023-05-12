@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { useSpring, animated } from '@react-spring/three'
 
 import { boardPositionsArray } from '../../data/boardPositions'
 
 export default function Player({ currentStep }) {
+
+    const [nextStep, setNextStep] = useState(0)
 
     const glb = useGLTF('./glb/Player.glb')
     const { actions } = useAnimations(glb.animations, glb.scene)
@@ -18,14 +20,23 @@ export default function Player({ currentStep }) {
         })
     }, [glb])
 
+    useEffect(() => {
+        if (currentStep > nextStep) {
+            setNextStep(nextStep + 1)
+        }
+    }, [currentStep])
+
     const { animatedPosition } = useSpring({ 
-        animatedPosition: boardPositionsArray[currentStep],
+        animatedPosition: boardPositionsArray[nextStep],
         config: { duration: 1000 },
         onStart: () => { 
             PlayerJump.reset().play()
         },
         onRest: () => {
-            PlayerJump.stop() 
+            PlayerJump.stop()
+            if (nextStep < currentStep) {
+                setNextStep(nextStep + 1)
+            }
         },
     })
 
