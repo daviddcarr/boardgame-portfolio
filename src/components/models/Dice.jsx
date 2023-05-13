@@ -1,17 +1,17 @@
-import { useMemo, useRef, useState } from "react"
+import { useMemo, useRef, useState, useEffect } from "react"
 import * as THREE from "three"
 import { useFrame } from "@react-three/fiber"
 import { useGLTF } from "@react-three/drei"
 import { RigidBody } from "@react-three/rapier"
 
 import { diceFaces } from "../../data/diceFaces"
-import { boardPositionsArray } from "../../data/boardPositions"
 
 export default function Dice({setTotal, updatePlayerRoll}) {
 
     const ref = useRef()
 
     const [hitSound] = useState(new Audio('./audio/hit.mp3'))
+    const [hovered, setHovered] = useState(false)
 
     const hasStoppedRef  = useRef(true)
     
@@ -24,6 +24,10 @@ export default function Dice({setTotal, updatePlayerRoll}) {
 
     const xStrength = 1
     const zStrength = 1
+
+    useEffect(() => {
+        document.body.style.cursor = hovered ? 'pointer' : 'auto'
+    }, [hovered])
 
     const handleClick = () => {
 
@@ -42,7 +46,6 @@ export default function Dice({setTotal, updatePlayerRoll}) {
             ref.current.applyImpulse(velocity, true)
             ref.current.applyTorqueImpulse(torque, true)
 
-            console.log("Dice is rolling...")
             hasStoppedRef.current = false
         }
     }
@@ -73,11 +76,6 @@ export default function Dice({setTotal, updatePlayerRoll}) {
                     }
                 });
 
-                console.log("Recalculating with new face value: ", faceValue)
-                // setTotal((prevTotal) => {
-                //     const newTotal = prevTotal + faceValue
-                //     return newTotal > boardPositionsArray.length - 1 ? boardPositionsArray.length - 1 : newTotal
-                // });
                 updatePlayerRoll(faceValue)
                 hasStoppedRef.current = true
             }
@@ -104,6 +102,8 @@ export default function Dice({setTotal, updatePlayerRoll}) {
             friction={0.5}
             mass={5}
             onCollisionEnter={playHitSound}
+            onPointerOver={() => setHovered(true)}
+            onPointerOut={() => setHovered(false)}
             >
             <mesh
                 geometry={diceMesh.geometry}

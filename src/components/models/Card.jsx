@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
@@ -19,6 +19,10 @@ export default function Card({ index, activeCard, setActiveCard, startPosition, 
     glb.nodes.Card.material.side = THREE.FrontSide
     return glb.nodes.Card
   }, [glb])
+
+  useEffect(() => {
+    document.body.style.cursor = hovering ? 'pointer' : 'auto'
+  }, [hovering])
 
   const cardTexture = useTexture(`./textures/card_${index+1}.png`)
 
