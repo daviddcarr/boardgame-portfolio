@@ -124,7 +124,7 @@ export default function Experience() {
 
             {/* Cards */}
             {
-                cardPositions.map((cardPosition, index) => {
+                cardTextures.length > 0 && cardPositions.map((cardPosition, index) => {
                     const { position, rotation } = cardPosition
                     return (
                         <Card 

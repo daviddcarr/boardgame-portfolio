@@ -10,7 +10,7 @@ export default function Player() {
 
     const [ playerStep ] = useGame(state => [ state.playerState.playerStep ])
 
-    const [nextStep, setNextStep] = useState(0)
+    const [nextStep, setNextStep] = useState(playerStep)
 
     const [hitSound] = useState(new Audio('./audio/player_tap.wav'))
 
@@ -29,6 +29,8 @@ export default function Player() {
     useEffect(() => {
         if (playerStep > nextStep) {
             setNextStep((n) => n + 1)
+        } else {
+            setNextStep(playerStep)
         }
     }, [playerStep])
 
