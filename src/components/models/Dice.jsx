@@ -6,9 +6,13 @@ import { RigidBody } from "@react-three/rapier"
 
 import { diceFaces } from "../../data/diceFaces"
 
-export default function Dice({setTotal, updatePlayerRoll}) {
+import { useGame } from "../../hooks/useGame"
+
+export default function Dice() {
 
     const ref = useRef()
+
+    const [ updatePlayerRoll ] = useGame(state => [ state.updatePlayerRoll ])
 
     const [hitSound] = useState(new Audio('./audio/hit.mp3'))
     const [hovered, setHovered] = useState(false)

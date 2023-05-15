@@ -1,10 +1,8 @@
 import React from 'react'
-import { useMemo, useRef, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { TextureLoader } from 'three'
-import { useThree } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
-import { OrbitControls, Environment, useHelper, useGLTF } from '@react-three/drei'
-import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js'
+import { OrbitControls, Environment, useGLTF } from '@react-three/drei'
 
 import Card from './models/Card'
 import Player from './models/Player'
@@ -16,6 +14,8 @@ import ThreeLogo from './models/ThreeLogo'
 import Rubiks from './models/Rubiks'
 
 import { boardPositionsArray } from '../data/boardPositions'
+
+import { useGame } from '../hooks/useGame'
 
 const preloadTextures  = async () => {
     const textureLoader = new TextureLoader()
@@ -58,16 +58,11 @@ const preloadTextures  = async () => {
     return await Promise.all(loadImages)
 }
 
-export default function Experience({ activeCard, setActiveCard, playerStep, setPlayerStep, updatePlayerRoll }) {
+export default function Experience() {
 
-    // const [ activeCard, setActiveCard ] = useState(null)
+    const [ playerStep ] = useGame(state => [state.playerState.playerStep])
+
     const [ cardTextures, setCardTextures ] = useState([])
-
-    const [ viewport ] = useThree((state) => [state.viewport])
-
-    const rectLight = useRef()
-
-    useHelper(rectLight, RectAreaLightHelper, 'red')
 
     const preload = {
         card: useGLTF('./glb/Card.glb'),
@@ -135,8 +130,6 @@ export default function Experience({ activeCard, setActiveCard, playerStep, setP
                         <Card 
                             key={index}
                             index={index}
-                            activeCard={activeCard}
-                            setActiveCard={setActiveCard}
                             startPosition={position}
                             startRotation={rotation}
                             flippedRotation={cardPosition.flippedRotation}
@@ -150,7 +143,7 @@ export default function Experience({ activeCard, setActiveCard, playerStep, setP
 
 
             {/* Player */}
-            <Player currentStep={playerStep} />
+            <Player />
     
             {/* Board */}
             <Board />
@@ -164,7 +157,7 @@ export default function Experience({ activeCard, setActiveCard, playerStep, setP
                 >
                 <TableCollider />
                 <BoardCollider />
-                <Dice updatePlayerRoll={updatePlayerRoll} position={[0, 0.25, 0]} />
+                <Dice position={[0, 0.25, 0]} />
             </Physics>
         </>
     )

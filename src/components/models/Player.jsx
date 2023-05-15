@@ -4,7 +4,11 @@ import { useSpring, animated } from '@react-spring/three'
 
 import { boardPositionsArray } from '../../data/boardPositions'
 
-export default function Player({ currentStep }) {
+import { useGame } from '../../hooks/useGame'
+
+export default function Player() {
+
+    const [ playerStep ] = useGame(state => [ state.playerState.playerStep ])
 
     const [nextStep, setNextStep] = useState(0)
 
@@ -23,10 +27,10 @@ export default function Player({ currentStep }) {
     }, [glb])
 
     useEffect(() => {
-        if (currentStep > nextStep) {
+        if (playerStep > nextStep) {
             setNextStep((n) => n + 1)
         }
-    }, [currentStep])
+    }, [playerStep])
 
     const { animatedPosition } = useSpring({ 
         animatedPosition: boardPositionsArray[nextStep],
@@ -39,7 +43,7 @@ export default function Player({ currentStep }) {
             hitSound.currentTime = 0
             hitSound.volume = 0.05
             hitSound.play()
-            if (nextStep < currentStep) {
+            if (nextStep < playerStep) {
                 setNextStep(nextStep + 1)
             }
         },

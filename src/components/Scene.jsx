@@ -5,7 +5,7 @@ import { EffectComposer, Vignette } from '@react-three/postprocessing'
 import Experience from './Experience'
 
 
-export  default function Scene({ activeCard, setActiveCard, playerStep, setPlayerStep, updatePlayerRoll }) {
+export  default function Scene() {
     
     return (
             <Canvas
@@ -18,11 +18,6 @@ export  default function Scene({ activeCard, setActiveCard, playerStep, setPlaye
                 </EffectComposer>
 
                 <Experience
-                    activeCard={activeCard}
-                    setActiveCard={setActiveCard}
-                    playerStep={playerStep}
-                    setPlayerStep={setPlayerStep}
-                    updatePlayerRoll={updatePlayerRoll}
                     />
             </Canvas>
     )

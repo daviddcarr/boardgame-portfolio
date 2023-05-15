@@ -3,13 +3,17 @@ import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 
-export default function Card({ index, activeCard, setActiveCard, startPosition, startRotation, spawnPosition, flippedRotation, glb, textures }) {
+import { useGame } from '../../hooks/useGame'
+
+export default function Card({ index, startPosition, startRotation, spawnPosition, flippedRotation, glb, textures }) {
   const { camera } = useThree()
   
   const [ hasFlipped, setHasFlipped ] = useState(false)
   const [ hovering, setHovering ] = useState(false)
   const [ revealSound ] = useState(new Audio('./audio/card_reveal.wav'))
   const [ hideSound ] = useState(new Audio('./audio/card_hide.wav'))
+
+  const [ activeCard, setActiveCard ] = useGame(state => [ state.playerState.activeCard, state.setActiveCard ])
 
   const flipped = useMemo(() => {
     return activeCard === index

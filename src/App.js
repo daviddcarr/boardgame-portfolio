@@ -7,7 +7,7 @@ import { HiOutlineArrowsExpand } from 'react-icons/hi'
 import { TbInfoHexagon, TbHexagonLetterX } from 'react-icons/tb'
 import { BsLinkedin, BsGithub, BsImages, BsFillFileEarmarkPdfFill } from 'react-icons/bs'
 
-import { boardPositionsArray } from './data/boardPositions'
+import { useGame } from './hooks/useGame'
 
 import './App.css'
 
@@ -15,12 +15,11 @@ import Scene from './components/Scene'
 
 
 function App() {
-  const [ previousRoll, setPreviousRoll ] = useState(0)
-  const [ playerStep, setPlayerStep ] = useState(0)
+
+  const [ previousRoll ] = useGame(state => [ state.playerState.previousRoll ])
+
   const [ fontSize, setFontSize ] = useState('10rem')
-  const [ activeCard, setActiveCard ] = useState(null)
-
-
+  const [ activeCard ] = useGame(state => [ state.playerState.activeCard ])
   const [showInfo, setShowInfo] = useState(false)
 
   useEffect(() => {
@@ -34,19 +33,11 @@ function App() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const updatePlayerRoll = (roll) => {
-    setPreviousRoll(roll)
-    setPlayerStep((prevTotal) => {
-      const newTotal = prevTotal + roll
-      return newTotal > boardPositionsArray.length - 1 ? boardPositionsArray.length - 1 : newTotal
-  });
-  }
-
   return (
     <main className="h-screen w-full overflow-hidden">
       <Suspense fallback={<Loading />}>
 
-      <Scene activeCard={activeCard} setActiveCard={setActiveCard} playerStep={playerStep} updatePlayerRoll={updatePlayerRoll} setPlayerStep={setPlayerStep} />
+      <Scene />
 
       <div className={`absolute inset-0 w-full flex  flex-col items-center ${ showInfo ? 'z-20 backdrop-blur bg-opacity-30 bg-gray-500' : 'z-0' }`}
         onClick={() => setShowInfo(false)}
