@@ -63,6 +63,7 @@ export default function Experience() {
     const [ playerStep ] = useGame(state => [state.playerState.playerStep])
 
     const [ cardTextures, setCardTextures ] = useState([])
+    const [hasInitialized, setHasInitialized] = useState(false)
 
     const preload = {
         card: useGLTF('./glb/Card.glb'),
@@ -96,6 +97,12 @@ export default function Experience() {
         }
         return positions
     }, [playerStep])
+
+    useEffect(() => {
+        if (cardPositions.length > 0) {
+            setHasInitialized(true)
+        }
+    }, [cardPositions, cardTextures])
 
     return (
         <>
@@ -136,6 +143,7 @@ export default function Experience() {
                             spawnPosition={[0, 10, 0]}
                             glb={preload.card}
                             textures={cardTextures}
+                            hasInitialized={hasInitialized}
                             />
                     )
                 })

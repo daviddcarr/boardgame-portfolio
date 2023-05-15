@@ -17,6 +17,7 @@ export const useGame = create((set, get) => {
                 previousRoll: 0,
                 activeCard: null,
                 flippedCards: [],
+                initializedCards: [],
             }
         })
     }
@@ -26,6 +27,7 @@ export const useGame = create((set, get) => {
         previousRoll: 0,
         activeCard: null,
         flippedCards: [],
+        initializedCards: [],
     }
 
 
@@ -58,6 +60,16 @@ export const useGame = create((set, get) => {
                 playerState: {
                     ...state.playerState,
                     flippedCards: !state.playerState.flippedCards.includes(index) ? [...state.playerState.flippedCards, index] : state.playerState.flippedCards
+                }
+            }))
+            saveState()
+        },
+
+        setInitializedCards: (index) => {
+            set(state => ({
+                playerState: {
+                    ...state.playerState,
+                    initializedCards: !state.playerState.initializedCards.includes(index) ? [...state.playerState.initializedCards, index] : state.playerState.initializedCards
                 }
             }))
             saveState()

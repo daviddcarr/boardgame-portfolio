@@ -8,6 +8,7 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
   const { camera } = useThree()
   
   const [ hovering, setHovering ] = useState(false)
+
   const [ revealSound ] = useState(new Audio('./audio/card_reveal.wav'))
   const [ hideSound ] = useState(new Audio('./audio/card_hide.wav'))
 
@@ -15,11 +16,16 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
     activeCard, 
     setActiveCard, 
     flippedCards, 
-    setFlippedCards  ] = useGame(state => [
+    setFlippedCards,
+    initializedCards,
+    setInitializedCards
+    ] = useGame(state => [
       state.playerState.activeCard, 
       state.setActiveCard,
       state.playerState.flippedCards,
-      state.setFlippedCards
+      state.setFlippedCards,
+      state.playerState.initializedCards,
+      state.setInitializedCards
     ])
 
   const flipped = useMemo(() => {
@@ -30,6 +36,10 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
     glb.nodes.Card.material.side = THREE.FrontSide
     return glb.nodes.Card
   }, [glb])
+
+  const startPositionVector = useMemo(() => {
+    return new THREE.Vector3(...startPosition)
+  }, [startPosition])
 
   useEffect(() => {
     document.body.style.cursor = hovering ? 'pointer' : 'auto'
@@ -85,6 +95,11 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
           cardRef.current.quaternion.slerp(targetRotation.current, 0.1)
 
       } else {
+          if (!initializedCards.includes(index)) {
+            if (cardRef.current.position.distanceTo(startPositionVector) < 0.01) {
+              setInitializedCards(index)
+            }
+          }
           cardRef.current.position.lerp(hovering ? hoverPosition : originalPosition, 0.1)
           cardRef.current.quaternion.slerp(flippedCards.includes(index) ? hasFlippedRotation : originalRotation, 0.1)
       }
@@ -101,12 +116,18 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
     hideSound.volume = 0.25
     hideSound.play()
   }
+
+
+  const initializedRotation = useMemo(() => {
+    return flippedCards.includes(index) ? flippedRotation : startRotation
+  }, [flippedRotation, startRotation])
   
   return (
         <mesh
           castShadow
           ref={cardRef} 
-          position={spawnPosition}
+          position={initializedCards.includes(index) ? startPosition : spawnPosition}
+          rotation={initializedCards.includes(index) ? initializedRotation : [0, 0, 0]}
           onClick={() => {
             if (activeCard === index) {
               setActiveCard(null)
