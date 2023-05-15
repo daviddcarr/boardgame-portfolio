@@ -6,11 +6,11 @@ export const useGame = create((set, get) => {
 
     const saveState = () => {
         const state = get()
-        localStorage.setItem('playerState', JSON.stringify(state.playerState))
+        localStorage.setItem('ddc_playerState', JSON.stringify(state.playerState))
     }
 
     const resetState = () => {
-        localStorage.removeItem('playerState')
+        localStorage.removeItem('ddc_playerState')
         set({
             playerState: {
                 playerStep: 0,
@@ -22,7 +22,7 @@ export const useGame = create((set, get) => {
         })
     }
 
-    const loadedState = JSON.parse(localStorage.getItem('playerState')) || {
+    const loadedState = JSON.parse(localStorage.getItem('ddc_playerState')) || {
         playerStep: 0,
         previousRoll: 0,
         activeCard: null,
