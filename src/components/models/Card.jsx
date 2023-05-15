@@ -1,19 +1,26 @@
 import { useRef, useMemo, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber'
-import { useTexture } from '@react-three/drei'
 
 import { useGame } from '../../hooks/useGame'
 
 export default function Card({ index, startPosition, startRotation, spawnPosition, flippedRotation, glb, textures }) {
   const { camera } = useThree()
   
-  const [ hasFlipped, setHasFlipped ] = useState(false)
   const [ hovering, setHovering ] = useState(false)
   const [ revealSound ] = useState(new Audio('./audio/card_reveal.wav'))
   const [ hideSound ] = useState(new Audio('./audio/card_hide.wav'))
 
-  const [ activeCard, setActiveCard ] = useGame(state => [ state.playerState.activeCard, state.setActiveCard ])
+  const [ 
+    activeCard, 
+    setActiveCard, 
+    flippedCards, 
+    setFlippedCards  ] = useGame(state => [
+      state.playerState.activeCard, 
+      state.setActiveCard,
+      state.playerState.flippedCards,
+      state.setFlippedCards
+    ])
 
   const flipped = useMemo(() => {
     return activeCard === index
@@ -28,7 +35,7 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
     document.body.style.cursor = hovering ? 'pointer' : 'auto'
   }, [hovering])
 
-  const cardTexture = useTexture(`./textures/card_${index+1}.png`)
+  const cardTexture = textures[index]
 
   const cardMaterial = useMemo(() => {
     cardTexture.center.set(0.5, 0.5)
@@ -79,7 +86,7 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
 
       } else {
           cardRef.current.position.lerp(hovering ? hoverPosition : originalPosition, 0.1)
-          cardRef.current.quaternion.slerp(hasFlipped ? hasFlippedRotation : originalRotation, 0.1)
+          cardRef.current.quaternion.slerp(flippedCards.includes(index) ? hasFlippedRotation : originalRotation, 0.1)
       }
     })
 
@@ -108,7 +115,7 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
               setActiveCard(index)
               playRevealSound()
             }
-            setHasFlipped(true)
+            setFlippedCards(index)
           }}
           onPointerEnter={() => {
             setHovering(true)
