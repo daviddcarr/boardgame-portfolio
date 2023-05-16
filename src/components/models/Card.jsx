@@ -79,9 +79,9 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
   useFrame(() => {
       if (flipped) {
           const newPosition  = new THREE.Vector3(
-              camera.position.x * 0.9,
-              camera.position.y * 0.9,
-              camera.position.z * 0.9
+              camera.position.x * 0.85,
+              camera.position.y * 0.85,
+              camera.position.z * 0.85
           )
           cardRef.current.position.lerp(newPosition, 0.1)
           
