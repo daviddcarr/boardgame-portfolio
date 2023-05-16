@@ -112,7 +112,7 @@ function App() {
         <p className="text-white font-bold uppercase">Roll: { previousRoll }</p>
       </div>
 
-      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 m-4 z-30 transition-transform ${ showInfo ? 'translate-y-0' : 'translate-y-32' }`}>
+      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 mb-4 z-30 transition-transform ${ showInfo ? 'translate-y-0' : 'translate-y-32' }`}>
         <button className="bg-red-400 hover:bg-red-500  text-white p-2 rounded-md flex items-center space-x-2"
           onClick={() => resetState()}
           >
