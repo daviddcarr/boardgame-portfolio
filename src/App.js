@@ -10,16 +10,16 @@ import { BsLinkedin, BsGithub, BsImages, BsFillFileEarmarkPdfFill } from 'react-
 import { useGame } from './hooks/useGame'
 
 import './App.css'
+import { projectLinks } from './data/projectLinks'
 
 import Scene from './components/Scene'
 
 
 function App() {
 
-  const [ previousRoll, resetState ] = useGame(state => [ state.playerState.previousRoll, state.resetState ])
+  const [ previousRoll, resetState, activeCard ] = useGame(state => [ state.playerState.previousRoll, state.resetState, state.playerState.activeCard ])
 
   const [ fontSize, setFontSize ] = useState('10rem')
-  const [ activeCard ] = useGame(state => [ state.playerState.activeCard ])
   const [showInfo, setShowInfo] = useState(false)
 
   useEffect(() => {
@@ -118,6 +118,17 @@ function App() {
           >
           <TbHexagonOff /> <span>Reset</span>
         </button>
+      </div>
+
+      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 mb-4 z-30 transition-transform ${ activeCard !== null && projectLinks[activeCard] !== null ? 'translate-y-0' : 'translate-y-32' }`}>
+        <a className="border-red-400 border-2 text-red-400 hover:bg-red-500  hover:text-white p-2 rounded-md flex items-center space-x-2"
+          href={ projectLinks[activeCard] }
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Link to project"
+          >
+          Learn More
+        </a>
       </div>
 
       <div className={`absolute bottom-0 right-0 m-4 z-30 transition-transform ${ activeCard === null ? 'translate-x-0' : 'translate-x-32' }`}>
