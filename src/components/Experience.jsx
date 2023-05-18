@@ -47,6 +47,7 @@ const preloadTextures  = async () => {
         './textures/card_24.png',
         './textures/card_25.png',
         './textures/card_26.png',
+        './textures/Alpha.png',
     ]
 
     const loadImages = images.map(image => 

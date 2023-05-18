@@ -46,19 +46,28 @@ export default function Card({ index, startPosition, startRotation, spawnPositio
   }, [hovering])
 
   const cardTexture = textures[index]
+  const alphaTexture = textures[textures.length - 1]
 
   const cardMaterial = useMemo(() => {
     cardTexture.center.set(0.5, 0.5)
     cardTexture.rotation = Math.PI
     cardTexture.repeat.x = -1
+    cardTexture.encoding = THREE.sRGBEncoding
     cardTexture.needUpdate = true
+
+    alphaTexture.center.set(0.5, 0.5)
+    alphaTexture.rotation = Math.PI
+    alphaTexture.repeat.x = -1
+    alphaTexture.needUpdate = true
 
     const mat = new THREE.MeshBasicMaterial({
       map: cardTexture,
+      alphaMap: alphaTexture,
+      transparent: true,
       side: THREE.FrontSide
     })
     return mat
-  }, [cardTexture])
+  }, [cardTexture, alphaTexture])
 
   const targetRotation = useRef(new THREE.Quaternion())
   const cardRef = useRef()
