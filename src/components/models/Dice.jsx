@@ -83,6 +83,12 @@ export default function Dice() {
                 updatePlayerRoll(faceValue)
                 hasStoppedRef.current = true
             }
+        } else if ( ref.current.translation().y < -3 ) {
+            // Reset dice if it falls off the table
+            ref.current.setTranslation({x:0, y:0.25, z:8})
+            ref.current.setLinvel({x:0, y:0, z:0})
+            ref.current.setAngvel({x:0, y:0, z:0})
+            hasStoppedRef.current = true
         }
     })
 
