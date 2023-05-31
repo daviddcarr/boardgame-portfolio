@@ -6,6 +6,7 @@ import { MdPinch } from 'react-icons/md'
 import { HiOutlineArrowsExpand } from 'react-icons/hi'
 import { TbInfoHexagon, TbHexagonLetterX, TbHexagonOff } from 'react-icons/tb'
 import { BsLinkedin, BsGithub, BsImages, BsFillFileEarmarkPdfFill } from 'react-icons/bs'
+import { AiOutlineCodepen } from 'react-icons/ai'
 
 import { useGame } from './hooks/useGame'
 
@@ -102,6 +103,17 @@ function App() {
                   >
                     <BsFillFileEarmarkPdfFill className="inline text-xl md:text-2xl" /> <span className="underline">Resume</span>
                 </a>
+                <p>
+                  <a 
+                    href="https://codepen.io/daviddcarr/pens/" 
+                    className="text-white text-sm md:text-md flex items-center space-x-1"
+                    aria-label="Link to David Dylan's CodePen Profile"
+                    target="_blank"
+                    rel="noreferrer"
+                    >
+                    <AiOutlineCodepen /> <span>CodePen</span>
+                  </a>
+                </p>
               </div>
 
             </div>
