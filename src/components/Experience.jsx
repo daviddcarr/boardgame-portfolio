@@ -120,7 +120,7 @@ export default function Experience() {
                 />
 
 
-            <Environment preset="warehouse" />
+            <Environment files="./empty_warehouse_01_4k.hdr" />
 
             <OrbitControls
                 maxPolarAngle={Math.PI / 2 - 0.1}
